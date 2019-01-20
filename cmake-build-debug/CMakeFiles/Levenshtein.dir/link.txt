@@ -1,0 +1,1 @@
+/usr/bin/c++   -fopenmp -O3 -g   CMakeFiles/Levenshtein.dir/main.cpp.o CMakeFiles/Levenshtein.dir/MyBarrier.cpp.o  -o Levenshtein 
