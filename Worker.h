@@ -18,6 +18,8 @@
 #include "BoostBarrier.h"
 #include <boost/lockfree/queue.hpp>
 #include "ind.h"
+#include "uint.h"
+#include "ConcurrentQueue.h"
 
 class Worker {
 
@@ -36,9 +38,9 @@ public:
 
             //if(!tileComputed[(M_Tiles-1)*M_Tiles + N_Tiles - 1]) {
                 t1 = omp_get_wtime();
-                while(indexQueue.empty()){
+                /*while(indexQueue.empty()){
 
-                }
+                }*/
                 indexQueue.pop(ind1);
                 if(ind1.i == -1){
                     //printf("Thread %i is quitting...\n", tid);
@@ -51,19 +53,19 @@ public:
                 ty = ind1.j;
 
                 checkPermission();
-                t2 = omp_get_wtime();
-                cumulativeT += (t2 - t1);
+                //t2 = omp_get_wtime();
+                //cumulativeT += (t2 - t1);
                 computeSubMatrix();
-                t1 = omp_get_wtime();
+                //t1 = omp_get_wtime();
                 releasePermission();
-                t2 = omp_get_wtime();
-                cumulativeT += (t2 - t1);
+                //t2 = omp_get_wtime();
+                //cumulativeT += (t2 - t1);
         }
-        printf("Total overhead by thread %i in %i iterations: %f\n", tid, i, cumulativeT);
+        //printf("Total overhead by thread %i in %i iterations: %f\n", tid, i, cumulativeT);
         thread_barrier->count_down_and_wait();
     }
 
-    Worker(const char *x, const char *y, int *D, barrier *b, boost::lockfree::queue<ind>& indexQueue,
+    Worker(const char *x, const char *y, uint16 *D, barrier *b, ConcurrentQueue<ind>& indexQueue,
             /*std::vector<std::mutex>& mutexVec, std::vector<std::condition_variable>& condVec,*/ std::atomic_bool* tileComputed) :
             D(D), x(x), y(y), /*mutexVec(mutexVec), condVec(condVec),*/ tileComputed(tileComputed), thread_barrier(b), indexQueue(indexQueue) {
         M = strlen(x);
@@ -73,18 +75,18 @@ public:
         tid = nThreads++;
     }
 
-    static const int TILE_WIDTH = 1024;
-    static const int MAX_THREAD_COUNT = 8;
+    static const int TILE_WIDTH = 512;
+    static const int MAX_THREAD_COUNT = 11;
 
 private:
 
     void computeSubMatrix() {
-        int M_ = M + 1;
-        int N_ = N + 1;
-        for (int i = I; i < N_ && i < I + TILE_WIDTH; i++) {
-            for (int j = J; j < M_ && j < J + TILE_WIDTH; j++) {
+        uint M_ = M + 1;
+        uint N_ = N + 1;
+        for (uint i = I; i < N_ && i < I + TILE_WIDTH; i++) {
+            for (uint j = J; j < M_ && j < J + TILE_WIDTH; j++) {
                 if (x[i - 1] != y[j - 1]) {
-                    int k = minimum_(D[i * M_ + j - 1], //insertion
+                    uint16 k = (uint16)minimum_(D[i * M_ + j - 1], //insertion
                                      D[(i - 1) * M_ + j], //insertion
                                      D[(i - 1) * M_ + j - 1]); //substitution
                     D[i * M_ + j] = k + 1;
@@ -140,17 +142,19 @@ private:
 
     }
 
-    int *D;
+
+    uint16 *D;
     int tx, ty;
-    int M, N;
-    int I, J;
+    uint M, N;
+    uint I, J;
     int M_Tiles, N_Tiles;
     const char *x, *y;
     //std::vector<std::mutex>& mutexVec;
     //std::vector<std::condition_variable>& condVec;
     std::atomic_bool* tileComputed;
     barrier *thread_barrier;
-    boost::lockfree::queue<ind>& indexQueue;
+    //boost::lockfree::queue<ind>& indexQueue;
+    ConcurrentQueue<ind>& indexQueue;
     int tid;
     static int nThreads;
 };

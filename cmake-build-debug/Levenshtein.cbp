@@ -90,6 +90,12 @@
 		<Unit filename="/home/fede/CLionProjects/Levenshtein/BoostBarrier.h">
 			<Option target="Levenshtein"/>
 		</Unit>
+		<Unit filename="/home/fede/CLionProjects/Levenshtein/ConcurrentQueue.cpp">
+			<Option target="Levenshtein"/>
+		</Unit>
+		<Unit filename="/home/fede/CLionProjects/Levenshtein/ConcurrentQueue.h">
+			<Option target="Levenshtein"/>
+		</Unit>
 		<Unit filename="/home/fede/CLionProjects/Levenshtein/Worker.cpp">
 			<Option target="Levenshtein"/>
 		</Unit>
@@ -115,6 +121,9 @@
 			<Option target="Levenshtein"/>
 		</Unit>
 		<Unit filename="/home/fede/CLionProjects/Levenshtein/main.cpp">
+			<Option target="Levenshtein"/>
+		</Unit>
+		<Unit filename="/home/fede/CLionProjects/Levenshtein/uint.h">
 			<Option target="Levenshtein"/>
 		</Unit>
 		<Unit filename="/home/fede/CLionProjects/Levenshtein/CMakeLists.txt">

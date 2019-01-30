@@ -14,6 +14,16 @@ mutex
 condition_variable
 -
 
+/home/fede/CLionProjects/Levenshtein/ConcurrentQueue.h
+queue
+-
+thread
+-
+mutex
+-
+condition_variable
+-
+
 /home/fede/CLionProjects/Levenshtein/Worker.cpp
 Worker.h
 /home/fede/CLionProjects/Levenshtein/Worker.h
@@ -47,6 +57,10 @@ boost/lockfree/queue.hpp
 -
 ind.h
 /home/fede/CLionProjects/Levenshtein/ind.h
+uint.h
+/home/fede/CLionProjects/Levenshtein/uint.h
+ConcurrentQueue.h
+/home/fede/CLionProjects/Levenshtein/ConcurrentQueue.h
 
 /home/fede/CLionProjects/Levenshtein/Worker2.h
 BoostBarrier.h
@@ -133,4 +147,10 @@ Worker3.h
 /home/fede/CLionProjects/Levenshtein/Worker3.h
 boost/lockfree/queue.hpp
 -
+uint.h
+/home/fede/CLionProjects/Levenshtein/uint.h
+ConcurrentQueue.h
+/home/fede/CLionProjects/Levenshtein/ConcurrentQueue.h
+
+/home/fede/CLionProjects/Levenshtein/uint.h
 

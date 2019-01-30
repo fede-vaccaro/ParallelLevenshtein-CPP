@@ -16,6 +16,8 @@
 #include "Worker2.h"
 #include "Worker3.h"
 #include <boost/lockfree/queue.hpp>
+#include "uint.h"
+#include "ConcurrentQueue.h"
 
 int minimum(int a, int b, int c) {
     int min = a;
@@ -30,7 +32,6 @@ int minimum_(const int a, const int b, const int c) {
     return std::min(std::min(a, b), c);
 }
 
-typedef unsigned short int uint16;
 
 int editDistanceST(const char *x, const char *y) {
     const int M = strlen(x);
@@ -76,7 +77,7 @@ int editDistanceST(const char *x, const char *y) {
     for (i = 0; i <= M; i++)
         delete D[i];
 
-    delete D;
+    delete[] D;
     return distance;
 }
 
@@ -90,19 +91,19 @@ void printMatrix(uint16 const *D, const uint16 M, const uint16 N) {
     }
 }
 
-const int MAX_NUM_THREADS = 8;
+const int MAX_NUM_THREADS = 12;
 
-const int TW = 512;
+const uint TW = 512;
 
-void computeSubMatrix(int I, int J, const int M, const int N, const char *x, const char *y, int *D) {
-    int M_ = M + 1;
-    int N_ = N + 1;
+void computeSubMatrix(uint I, uint J, const int M, const int N, const char *x, const char *y, uint16 *D) {
+    uint M_ = M + 1;
+    uint N_ = N + 1;
     I = I * TW + 1;
     J = J * TW + 1;
     for (int i = I; i < N_ && i < I + TW; i++) {
         for (int j = J; j < M_ && j < J + TW; j++) {
             if (x[i - 1] != y[j - 1]) {
-                int k = minimum(D[i * M_ + j - 1], //insertion
+                uint16 k = minimum(D[i * M_ + j - 1], //insertion
                                 D[(i - 1) * M_ + j], //insertion
                                 D[(i - 1) * M_ + j - 1]); //substitution
                 D[i * M_ + j] = k + 1;
@@ -114,17 +115,18 @@ void computeSubMatrix(int I, int J, const int M, const int N, const char *x, con
 }
 
 int editDistanceOMP(const char *x, const char *y) {
-    const int M = strlen(x);
-    const int N = strlen(y);
+    const uint M = strlen(x);
+    const uint N = strlen(y);
 
-    const int M_ = M + 1;
-    const int N_ = N + 1;
+    const uint M_ = M + 1;
+    const uint N_ = N + 1;
 
-    //int ** D = new int *[M+1];
-    std::vector<int> D;
-    D.resize(M_ * N_);
+    //std::vector<uint16> D(M_*N_);
+    const uint dim = (uint)M_*(uint)N_;
+    uint16 * D = new uint16[dim];
+    //D.resize(M_ * N_);
 
-    int i, j;
+    uint i, j;
 
     for (i = 0; i < M_; i++)
         D[i] = i;
@@ -145,7 +147,7 @@ int editDistanceOMP(const char *x, const char *y) {
     const int TOTAL_TILES = M_Tiles * N_Tiles;
     float t1, t2;
 
-#pragma omp parallel num_threads(8)
+#pragma omp parallel num_threads(MAX_NUM_THREADS)
     {
 #pragma omp master
         {
@@ -167,20 +169,26 @@ int editDistanceOMP(const char *x, const char *y) {
     //b.count_down_and_wait();
     int distance = D[N * M_ + M];
 
+    delete[] D;
     return distance;
 }
+
+#define TTILES 9604
+#define N_THREAD 12
 
 int editDistanceCPPT(const char *x, const char *y) {
     const int M = strlen(x);
     const int N = strlen(y);
 
-    const int M_ = M + 1;
-    const int N_ = N + 1;
+    const uint M_ = M + 1;
+    const uint N_ = N + 1;
 
-    std::vector<int> D;
-    D.resize(M_ * N_);
+    //std::vector<uint16> D(M_*N_);
+    const uint dim = (uint)M_*(uint)N_;
+    uint16 * D = new uint16[dim];
+    //D.resize(M_ * N_);
 
-    int i, j;
+    uint i, j;
 
     for (i = 0; i < M_; i++)
         D[i] = i;
@@ -206,16 +214,16 @@ int editDistanceCPPT(const char *x, const char *y) {
     }
 
     barrier threadBarrier(Worker::MAX_THREAD_COUNT + 1);
-    boost::lockfree::queue<ind> indexQueue(TOTAL_TILES + Worker::MAX_THREAD_COUNT);
-
+    //boost::lockfree::queue<ind> indexQueue(TOTAL_TILES + Worker::MAX_THREAD_COUNT);
+    ConcurrentQueue<ind> indexQueue;
     std::vector<std::thread> threadVec(Worker::MAX_THREAD_COUNT);
-
 
     for (int d = DStart; d < DFinish; d++) {
         const int iMax = std::min(M_Tiles + d, N_Tiles);
         const int iMin = std::max(d, 0);
         for (i = iMin; i < iMax; i++) {
             j = M_Tiles - i + d - 1;
+            //indexQueue.unsynchronized_push(ind(i,j));
             indexQueue.push(ind(i,j));
         }
     }
@@ -232,7 +240,8 @@ int editDistanceCPPT(const char *x, const char *y) {
     threadBarrier.count_down_and_wait();
     int distance = D[N * M_ + M];
 
-    delete tileComputed;
+    delete[] D;
+    delete[] tileComputed;
     return distance;
 }
 
@@ -354,7 +363,9 @@ int editDistanceMT3(const char *x, const char *y) {
 
 int main() {
 
-    const int N = 40000;
+    std::cout << "uint16 is: " << sizeof(uint16)*8 << " bit" << std::endl;
+
+    const int N = 40000+1;
     std::cout << "N is: " << N << std::endl;
     char *A = new char[N];
     char *B = new char[N];

@@ -150,6 +150,33 @@ BoostBarrier.cpp.s:
 	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.s
 .PHONY : BoostBarrier.cpp.s
 
+ConcurrentQueue.o: ConcurrentQueue.cpp.o
+
+.PHONY : ConcurrentQueue.o
+
+# target to build an object file
+ConcurrentQueue.cpp.o:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/ConcurrentQueue.cpp.o
+.PHONY : ConcurrentQueue.cpp.o
+
+ConcurrentQueue.i: ConcurrentQueue.cpp.i
+
+.PHONY : ConcurrentQueue.i
+
+# target to preprocess a source file
+ConcurrentQueue.cpp.i:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/ConcurrentQueue.cpp.i
+.PHONY : ConcurrentQueue.cpp.i
+
+ConcurrentQueue.s: ConcurrentQueue.cpp.s
+
+.PHONY : ConcurrentQueue.s
+
+# target to generate assembly for a file
+ConcurrentQueue.cpp.s:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/ConcurrentQueue.cpp.s
+.PHONY : ConcurrentQueue.cpp.s
+
 Worker.o: Worker.cpp.o
 
 .PHONY : Worker.o
@@ -297,6 +324,9 @@ help:
 	@echo "... BoostBarrier.o"
 	@echo "... BoostBarrier.i"
 	@echo "... BoostBarrier.s"
+	@echo "... ConcurrentQueue.o"
+	@echo "... ConcurrentQueue.i"
+	@echo "... ConcurrentQueue.s"
 	@echo "... Worker.o"
 	@echo "... Worker.i"
 	@echo "... Worker.s"
