@@ -70,32 +70,92 @@ CMakeFiles/Levenshtein.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Levenshtein.dir/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/CLionProjects/Levenshtein/main.cpp -o CMakeFiles/Levenshtein.dir/main.cpp.s
 
-CMakeFiles/Levenshtein.dir/MyBarrier.cpp.o: CMakeFiles/Levenshtein.dir/flags.make
-CMakeFiles/Levenshtein.dir/MyBarrier.cpp.o: ../MyBarrier.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/CLionProjects/Levenshtein/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Levenshtein.dir/MyBarrier.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Levenshtein.dir/MyBarrier.cpp.o -c /home/fede/CLionProjects/Levenshtein/MyBarrier.cpp
+CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.o: CMakeFiles/Levenshtein.dir/flags.make
+CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.o: ../BoostBarrier.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/CLionProjects/Levenshtein/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.o -c /home/fede/CLionProjects/Levenshtein/BoostBarrier.cpp
 
-CMakeFiles/Levenshtein.dir/MyBarrier.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Levenshtein.dir/MyBarrier.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/CLionProjects/Levenshtein/MyBarrier.cpp > CMakeFiles/Levenshtein.dir/MyBarrier.cpp.i
+CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/CLionProjects/Levenshtein/BoostBarrier.cpp > CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.i
 
-CMakeFiles/Levenshtein.dir/MyBarrier.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Levenshtein.dir/MyBarrier.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/CLionProjects/Levenshtein/MyBarrier.cpp -o CMakeFiles/Levenshtein.dir/MyBarrier.cpp.s
+CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/CLionProjects/Levenshtein/BoostBarrier.cpp -o CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.s
+
+CMakeFiles/Levenshtein.dir/Worker.cpp.o: CMakeFiles/Levenshtein.dir/flags.make
+CMakeFiles/Levenshtein.dir/Worker.cpp.o: ../Worker.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/CLionProjects/Levenshtein/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Levenshtein.dir/Worker.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Levenshtein.dir/Worker.cpp.o -c /home/fede/CLionProjects/Levenshtein/Worker.cpp
+
+CMakeFiles/Levenshtein.dir/Worker.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Levenshtein.dir/Worker.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/CLionProjects/Levenshtein/Worker.cpp > CMakeFiles/Levenshtein.dir/Worker.cpp.i
+
+CMakeFiles/Levenshtein.dir/Worker.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Levenshtein.dir/Worker.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/CLionProjects/Levenshtein/Worker.cpp -o CMakeFiles/Levenshtein.dir/Worker.cpp.s
+
+CMakeFiles/Levenshtein.dir/ind.cpp.o: CMakeFiles/Levenshtein.dir/flags.make
+CMakeFiles/Levenshtein.dir/ind.cpp.o: ../ind.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/CLionProjects/Levenshtein/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Levenshtein.dir/ind.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Levenshtein.dir/ind.cpp.o -c /home/fede/CLionProjects/Levenshtein/ind.cpp
+
+CMakeFiles/Levenshtein.dir/ind.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Levenshtein.dir/ind.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/CLionProjects/Levenshtein/ind.cpp > CMakeFiles/Levenshtein.dir/ind.cpp.i
+
+CMakeFiles/Levenshtein.dir/ind.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Levenshtein.dir/ind.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/CLionProjects/Levenshtein/ind.cpp -o CMakeFiles/Levenshtein.dir/ind.cpp.s
+
+CMakeFiles/Levenshtein.dir/Worker2.cpp.o: CMakeFiles/Levenshtein.dir/flags.make
+CMakeFiles/Levenshtein.dir/Worker2.cpp.o: ../Worker2.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/CLionProjects/Levenshtein/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Levenshtein.dir/Worker2.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Levenshtein.dir/Worker2.cpp.o -c /home/fede/CLionProjects/Levenshtein/Worker2.cpp
+
+CMakeFiles/Levenshtein.dir/Worker2.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Levenshtein.dir/Worker2.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/CLionProjects/Levenshtein/Worker2.cpp > CMakeFiles/Levenshtein.dir/Worker2.cpp.i
+
+CMakeFiles/Levenshtein.dir/Worker2.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Levenshtein.dir/Worker2.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/CLionProjects/Levenshtein/Worker2.cpp -o CMakeFiles/Levenshtein.dir/Worker2.cpp.s
+
+CMakeFiles/Levenshtein.dir/Worker3.cpp.o: CMakeFiles/Levenshtein.dir/flags.make
+CMakeFiles/Levenshtein.dir/Worker3.cpp.o: ../Worker3.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fede/CLionProjects/Levenshtein/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Levenshtein.dir/Worker3.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Levenshtein.dir/Worker3.cpp.o -c /home/fede/CLionProjects/Levenshtein/Worker3.cpp
+
+CMakeFiles/Levenshtein.dir/Worker3.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Levenshtein.dir/Worker3.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fede/CLionProjects/Levenshtein/Worker3.cpp > CMakeFiles/Levenshtein.dir/Worker3.cpp.i
+
+CMakeFiles/Levenshtein.dir/Worker3.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Levenshtein.dir/Worker3.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fede/CLionProjects/Levenshtein/Worker3.cpp -o CMakeFiles/Levenshtein.dir/Worker3.cpp.s
 
 # Object files for target Levenshtein
 Levenshtein_OBJECTS = \
 "CMakeFiles/Levenshtein.dir/main.cpp.o" \
-"CMakeFiles/Levenshtein.dir/MyBarrier.cpp.o"
+"CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.o" \
+"CMakeFiles/Levenshtein.dir/Worker.cpp.o" \
+"CMakeFiles/Levenshtein.dir/ind.cpp.o" \
+"CMakeFiles/Levenshtein.dir/Worker2.cpp.o" \
+"CMakeFiles/Levenshtein.dir/Worker3.cpp.o"
 
 # External object files for target Levenshtein
 Levenshtein_EXTERNAL_OBJECTS =
 
 Levenshtein: CMakeFiles/Levenshtein.dir/main.cpp.o
-Levenshtein: CMakeFiles/Levenshtein.dir/MyBarrier.cpp.o
+Levenshtein: CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.o
+Levenshtein: CMakeFiles/Levenshtein.dir/Worker.cpp.o
+Levenshtein: CMakeFiles/Levenshtein.dir/ind.cpp.o
+Levenshtein: CMakeFiles/Levenshtein.dir/Worker2.cpp.o
+Levenshtein: CMakeFiles/Levenshtein.dir/Worker3.cpp.o
 Levenshtein: CMakeFiles/Levenshtein.dir/build.make
 Levenshtein: CMakeFiles/Levenshtein.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/fede/CLionProjects/Levenshtein/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Levenshtein"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/fede/CLionProjects/Levenshtein/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable Levenshtein"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Levenshtein.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

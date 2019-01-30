@@ -84,10 +84,34 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/fede/CLionProjects/Levenshtein/MyBarrier.cpp">
+		<Unit filename="/home/fede/CLionProjects/Levenshtein/BoostBarrier.cpp">
 			<Option target="Levenshtein"/>
 		</Unit>
-		<Unit filename="/home/fede/CLionProjects/Levenshtein/MyBarrier.h">
+		<Unit filename="/home/fede/CLionProjects/Levenshtein/BoostBarrier.h">
+			<Option target="Levenshtein"/>
+		</Unit>
+		<Unit filename="/home/fede/CLionProjects/Levenshtein/Worker.cpp">
+			<Option target="Levenshtein"/>
+		</Unit>
+		<Unit filename="/home/fede/CLionProjects/Levenshtein/Worker.h">
+			<Option target="Levenshtein"/>
+		</Unit>
+		<Unit filename="/home/fede/CLionProjects/Levenshtein/Worker2.cpp">
+			<Option target="Levenshtein"/>
+		</Unit>
+		<Unit filename="/home/fede/CLionProjects/Levenshtein/Worker2.h">
+			<Option target="Levenshtein"/>
+		</Unit>
+		<Unit filename="/home/fede/CLionProjects/Levenshtein/Worker3.cpp">
+			<Option target="Levenshtein"/>
+		</Unit>
+		<Unit filename="/home/fede/CLionProjects/Levenshtein/Worker3.h">
+			<Option target="Levenshtein"/>
+		</Unit>
+		<Unit filename="/home/fede/CLionProjects/Levenshtein/ind.cpp">
+			<Option target="Levenshtein"/>
+		</Unit>
+		<Unit filename="/home/fede/CLionProjects/Levenshtein/ind.h">
 			<Option target="Levenshtein"/>
 		</Unit>
 		<Unit filename="/home/fede/CLionProjects/Levenshtein/main.cpp">

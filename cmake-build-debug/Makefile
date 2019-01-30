@@ -123,32 +123,140 @@ Levenshtein/fast:
 	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/build
 .PHONY : Levenshtein/fast
 
-MyBarrier.o: MyBarrier.cpp.o
+BoostBarrier.o: BoostBarrier.cpp.o
 
-.PHONY : MyBarrier.o
+.PHONY : BoostBarrier.o
 
 # target to build an object file
-MyBarrier.cpp.o:
-	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/MyBarrier.cpp.o
-.PHONY : MyBarrier.cpp.o
+BoostBarrier.cpp.o:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.o
+.PHONY : BoostBarrier.cpp.o
 
-MyBarrier.i: MyBarrier.cpp.i
+BoostBarrier.i: BoostBarrier.cpp.i
 
-.PHONY : MyBarrier.i
+.PHONY : BoostBarrier.i
 
 # target to preprocess a source file
-MyBarrier.cpp.i:
-	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/MyBarrier.cpp.i
-.PHONY : MyBarrier.cpp.i
+BoostBarrier.cpp.i:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.i
+.PHONY : BoostBarrier.cpp.i
 
-MyBarrier.s: MyBarrier.cpp.s
+BoostBarrier.s: BoostBarrier.cpp.s
 
-.PHONY : MyBarrier.s
+.PHONY : BoostBarrier.s
 
 # target to generate assembly for a file
-MyBarrier.cpp.s:
-	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/MyBarrier.cpp.s
-.PHONY : MyBarrier.cpp.s
+BoostBarrier.cpp.s:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.s
+.PHONY : BoostBarrier.cpp.s
+
+Worker.o: Worker.cpp.o
+
+.PHONY : Worker.o
+
+# target to build an object file
+Worker.cpp.o:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker.cpp.o
+.PHONY : Worker.cpp.o
+
+Worker.i: Worker.cpp.i
+
+.PHONY : Worker.i
+
+# target to preprocess a source file
+Worker.cpp.i:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker.cpp.i
+.PHONY : Worker.cpp.i
+
+Worker.s: Worker.cpp.s
+
+.PHONY : Worker.s
+
+# target to generate assembly for a file
+Worker.cpp.s:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker.cpp.s
+.PHONY : Worker.cpp.s
+
+Worker2.o: Worker2.cpp.o
+
+.PHONY : Worker2.o
+
+# target to build an object file
+Worker2.cpp.o:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker2.cpp.o
+.PHONY : Worker2.cpp.o
+
+Worker2.i: Worker2.cpp.i
+
+.PHONY : Worker2.i
+
+# target to preprocess a source file
+Worker2.cpp.i:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker2.cpp.i
+.PHONY : Worker2.cpp.i
+
+Worker2.s: Worker2.cpp.s
+
+.PHONY : Worker2.s
+
+# target to generate assembly for a file
+Worker2.cpp.s:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker2.cpp.s
+.PHONY : Worker2.cpp.s
+
+Worker3.o: Worker3.cpp.o
+
+.PHONY : Worker3.o
+
+# target to build an object file
+Worker3.cpp.o:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker3.cpp.o
+.PHONY : Worker3.cpp.o
+
+Worker3.i: Worker3.cpp.i
+
+.PHONY : Worker3.i
+
+# target to preprocess a source file
+Worker3.cpp.i:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker3.cpp.i
+.PHONY : Worker3.cpp.i
+
+Worker3.s: Worker3.cpp.s
+
+.PHONY : Worker3.s
+
+# target to generate assembly for a file
+Worker3.cpp.s:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker3.cpp.s
+.PHONY : Worker3.cpp.s
+
+ind.o: ind.cpp.o
+
+.PHONY : ind.o
+
+# target to build an object file
+ind.cpp.o:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/ind.cpp.o
+.PHONY : ind.cpp.o
+
+ind.i: ind.cpp.i
+
+.PHONY : ind.i
+
+# target to preprocess a source file
+ind.cpp.i:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/ind.cpp.i
+.PHONY : ind.cpp.i
+
+ind.s: ind.cpp.s
+
+.PHONY : ind.s
+
+# target to generate assembly for a file
+ind.cpp.s:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/ind.cpp.s
+.PHONY : ind.cpp.s
 
 main.o: main.cpp.o
 
@@ -186,9 +294,21 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Levenshtein"
 	@echo "... edit_cache"
-	@echo "... MyBarrier.o"
-	@echo "... MyBarrier.i"
-	@echo "... MyBarrier.s"
+	@echo "... BoostBarrier.o"
+	@echo "... BoostBarrier.i"
+	@echo "... BoostBarrier.s"
+	@echo "... Worker.o"
+	@echo "... Worker.i"
+	@echo "... Worker.s"
+	@echo "... Worker2.o"
+	@echo "... Worker2.i"
+	@echo "... Worker2.s"
+	@echo "... Worker3.o"
+	@echo "... Worker3.i"
+	@echo "... Worker3.s"
+	@echo "... ind.o"
+	@echo "... ind.i"
+	@echo "... ind.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

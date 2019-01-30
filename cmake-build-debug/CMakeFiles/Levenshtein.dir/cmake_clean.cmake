@@ -1,6 +1,10 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Levenshtein.dir/main.cpp.o"
-  "CMakeFiles/Levenshtein.dir/MyBarrier.cpp.o"
+  "CMakeFiles/Levenshtein.dir/BoostBarrier.cpp.o"
+  "CMakeFiles/Levenshtein.dir/Worker.cpp.o"
+  "CMakeFiles/Levenshtein.dir/ind.cpp.o"
+  "CMakeFiles/Levenshtein.dir/Worker2.cpp.o"
+  "CMakeFiles/Levenshtein.dir/Worker3.cpp.o"
   "Levenshtein.pdb"
   "Levenshtein"
 )
