@@ -39,10 +39,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/58/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /snap/clion/61/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /snap/clion/58/bin/cmake/linux/bin/cmake -E remove -f
+RM = /snap/clion/61/bin/cmake/linux/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /home/fede/CLionProjects/Levenshtein/cmake-build-debug
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/snap/clion/58/bin/cmake/linux/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/snap/clion/61/bin/cmake/linux/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -70,7 +70,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/snap/clion/58/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/snap/clion/61/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -231,33 +231,6 @@ Worker2.cpp.s:
 	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker2.cpp.s
 .PHONY : Worker2.cpp.s
 
-Worker3.o: Worker3.cpp.o
-
-.PHONY : Worker3.o
-
-# target to build an object file
-Worker3.cpp.o:
-	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker3.cpp.o
-.PHONY : Worker3.cpp.o
-
-Worker3.i: Worker3.cpp.i
-
-.PHONY : Worker3.i
-
-# target to preprocess a source file
-Worker3.cpp.i:
-	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker3.cpp.i
-.PHONY : Worker3.cpp.i
-
-Worker3.s: Worker3.cpp.s
-
-.PHONY : Worker3.s
-
-# target to generate assembly for a file
-Worker3.cpp.s:
-	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker3.cpp.s
-.PHONY : Worker3.cpp.s
-
 ind.o: ind.cpp.o
 
 .PHONY : ind.o
@@ -333,9 +306,6 @@ help:
 	@echo "... Worker2.o"
 	@echo "... Worker2.i"
 	@echo "... Worker2.s"
-	@echo "... Worker3.o"
-	@echo "... Worker3.i"
-	@echo "... Worker3.s"
 	@echo "... ind.o"
 	@echo "... ind.i"
 	@echo "... ind.s"

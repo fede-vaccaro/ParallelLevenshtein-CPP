@@ -16,7 +16,6 @@
 #include <condition_variable>
 #include <atomic>
 #include "BoostBarrier.h"
-#include <boost/lockfree/queue.hpp>
 #include "ind.h"
 #include "uint.h"
 #include "ConcurrentQueue.h"
@@ -25,49 +24,26 @@ class Worker {
 
 public:
     void operator()() {
-        int i = 0;
-        //while(!indexQueue.empty()){// && !tileComputed[(M_Tiles-1)*M_Tiles + N_Tiles - 1]) {
         ind ind1;
-        float cumulativeT = 0.0;
-        float t2, t1;
         while(1) {
-            /*while(indexQueue.empty()){
-                if(tileComputed[(M_Tiles-1)*M_Tiles + N_Tiles - 1])
-                    break;
-            }*/
-
-            //if(!tileComputed[(M_Tiles-1)*M_Tiles + N_Tiles - 1]) {
-                t1 = omp_get_wtime();
-                /*while(indexQueue.empty()){
-
-                }*/
                 indexQueue.pop(ind1);
                 if(ind1.i == -1){
-                    //printf("Thread %i is quitting...\n", tid);
                     break;
                 }
-                ++i;
                 I = ind1.i * TILE_WIDTH + 1;
                 J = ind1.j * TILE_WIDTH + 1;
                 tx = ind1.i;
                 ty = ind1.j;
 
-                checkPermission();
-                //t2 = omp_get_wtime();
-                //cumulativeT += (t2 - t1);
-                computeSubMatrix();
-                //t1 = omp_get_wtime();
-                releasePermission();
-                //t2 = omp_get_wtime();
-                //cumulativeT += (t2 - t1);
+                checkPermission(); // check if the assigned (i,j) tile is ready to be computed, checking if (i-1,j), (i,j-1) and (i-1,j-1) are been computed
+                computeSubMatrix(); // compute the (i,j) submatrix
+                releasePermission(); // set the tile (i,j) as computed
         }
-        //printf("Total overhead by thread %i in %i iterations: %f\n", tid, i, cumulativeT);
-        thread_barrier->count_down_and_wait();
+        thread_barrier->count_down_and_wait(); // to synchronize each thread after the completion
     }
 
-    Worker(const char *x, const char *y, uint16 *D, barrier *b, ConcurrentQueue<ind>& indexQueue,
-            /*std::vector<std::mutex>& mutexVec, std::vector<std::condition_variable>& condVec,*/ std::atomic_bool* tileComputed) :
-            D(D), x(x), y(y), /*mutexVec(mutexVec), condVec(condVec),*/ tileComputed(tileComputed), thread_barrier(b), indexQueue(indexQueue) {
+    Worker(const char *x, const char *y, uint16 *D, barrier *b, ConcurrentQueue<ind>& indexQueue, std::atomic_bool* tileComputed) :
+            D(D), x(x), y(y), tileComputed(tileComputed), thread_barrier(b), indexQueue(indexQueue) {
         M = strlen(x);
         N = strlen(y);
         M_Tiles = ceil((float) M / Worker::TILE_WIDTH);
@@ -76,7 +52,7 @@ public:
     }
 
     static const int TILE_WIDTH = 512;
-    static const int MAX_THREAD_COUNT = 11;
+    static const int MAX_THREAD_COUNT = 8;
 
 private:
 
@@ -86,9 +62,9 @@ private:
         for (uint i = I; i < N_ && i < I + TILE_WIDTH; i++) {
             for (uint j = J; j < M_ && j < J + TILE_WIDTH; j++) {
                 if (x[i - 1] != y[j - 1]) {
-                    uint16 k = (uint16)minimum_(D[i * M_ + j - 1], //insertion
-                                     D[(i - 1) * M_ + j], //insertion
-                                     D[(i - 1) * M_ + j - 1]); //substitution
+                    uint16 k = (uint16)minimum_(D[i * M_ + j - 1],
+                                     D[(i - 1) * M_ + j],
+                                     D[(i - 1) * M_ + j - 1]);
                     D[i * M_ + j] = k + 1;
                 } else {
                     D[i * M_ + j] = D[(i - 1) * M_ + j - 1];
@@ -102,21 +78,17 @@ private:
     }
 
     void checkPermission(){
-        //std::unique_lock<std::mutex> lock(mutexVec[tx*M_Tiles + ty]);
 
         if(tx > 0 && ty > 0) {
             while (!(tileComputed[(tx - 1) * M_Tiles + ty] &&
                      tileComputed[tx * M_Tiles + ty - 1] &&
                      tileComputed[(tx - 1) * M_Tiles + ty - 1])) {
-                //condVec[tx * M_Tiles + ty].wait(lock);
             }
         }else if(tx > 0){
             while (!tileComputed[(tx - 1) * M_Tiles + ty]) {
-                //condVec[tx * M_Tiles + ty].wait(lock);
             }
         }else if(ty > 0){
             while (!tileComputed[tx * M_Tiles + ty - 1]) {
-                //condVec[tx * M_Tiles + ty].wait(lock);
             }
         }
 
@@ -124,22 +96,6 @@ private:
 
     void releasePermission(){
         tileComputed[tx*M_Tiles + ty] = true;
-
-        /*
-        if(tx < N_Tiles - 1) {
-            //condVec[(tx+1) * M_Tiles + ty].notify_one();
-            indexQueue.push(ind(tx+1,ty));
-        }
-        if(ty < M_Tiles - 1) {
-            //condVec[tx * M_Tiles + ty + 1].notify_one();
-            indexQueue.push(ind(tx,ty+1));
-        }
-        if(tx < N_Tiles - 1 && ty < M_Tiles - 1){
-            //condVec[(tx+1)*M_Tiles + ty + 1].notify_one();
-            indexQueue.push(ind(tx+1,ty+1));
-        }
-        */
-
     }
 
 
@@ -149,17 +105,12 @@ private:
     uint I, J;
     int M_Tiles, N_Tiles;
     const char *x, *y;
-    //std::vector<std::mutex>& mutexVec;
-    //std::vector<std::condition_variable>& condVec;
     std::atomic_bool* tileComputed;
     barrier *thread_barrier;
-    //boost::lockfree::queue<ind>& indexQueue;
     ConcurrentQueue<ind>& indexQueue;
     int tid;
     static int nThreads;
 };
-
-
 
 
 #endif //LEVENSHTEIN_WORKER_H

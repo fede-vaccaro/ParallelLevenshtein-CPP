@@ -4,5 +4,4 @@
 
 #include "Worker2.h"
 
-int Worker2::threadCount = 0;
-barrier Worker2::sharedBarrier(Worker2::MAX_THREAD_COUNT);
+int Worker2::nThreads = 0;

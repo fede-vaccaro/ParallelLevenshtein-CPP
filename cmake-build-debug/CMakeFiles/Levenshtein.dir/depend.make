@@ -15,14 +15,11 @@ CMakeFiles/Levenshtein.dir/Worker.cpp.o: ../ind.h
 CMakeFiles/Levenshtein.dir/Worker.cpp.o: ../uint.h
 
 CMakeFiles/Levenshtein.dir/Worker2.cpp.o: ../BoostBarrier.h
+CMakeFiles/Levenshtein.dir/Worker2.cpp.o: ../ConcurrentQueue.h
 CMakeFiles/Levenshtein.dir/Worker2.cpp.o: ../Worker2.cpp
 CMakeFiles/Levenshtein.dir/Worker2.cpp.o: ../Worker2.h
 CMakeFiles/Levenshtein.dir/Worker2.cpp.o: ../ind.h
-
-CMakeFiles/Levenshtein.dir/Worker3.cpp.o: ../BoostBarrier.h
-CMakeFiles/Levenshtein.dir/Worker3.cpp.o: ../Worker3.cpp
-CMakeFiles/Levenshtein.dir/Worker3.cpp.o: ../Worker3.h
-CMakeFiles/Levenshtein.dir/Worker3.cpp.o: ../ind.h
+CMakeFiles/Levenshtein.dir/Worker2.cpp.o: ../uint.h
 
 CMakeFiles/Levenshtein.dir/ind.cpp.o: ../ind.cpp
 CMakeFiles/Levenshtein.dir/ind.cpp.o: ../ind.h
@@ -31,8 +28,6 @@ CMakeFiles/Levenshtein.dir/main.cpp.o: ../BoostBarrier.h
 CMakeFiles/Levenshtein.dir/main.cpp.o: ../ConcurrentQueue.h
 CMakeFiles/Levenshtein.dir/main.cpp.o: ../Worker.h
 CMakeFiles/Levenshtein.dir/main.cpp.o: ../Worker2.h
-CMakeFiles/Levenshtein.dir/main.cpp.o: ../Worker3.h
-CMakeFiles/Levenshtein.dir/main.cpp.o: ../ctpl_stl.h
 CMakeFiles/Levenshtein.dir/main.cpp.o: ../ind.h
 CMakeFiles/Levenshtein.dir/main.cpp.o: ../main.cpp
 CMakeFiles/Levenshtein.dir/main.cpp.o: ../uint.h

@@ -1,5 +1,6 @@
 //
 // Created by fede on 30/01/19.
+// from https://juanchopanzacpp.wordpress.com/2013/02/26/concurrent-queue-c11/
 //
 
 #ifndef LEVENSHTEIN_CONCURRENTQUEUE_H
@@ -53,6 +54,14 @@ public:
         queue_.push(std::move(item));
         mlock.unlock();
         cond_.notify_one();
+    }
+
+    void push_unsafe(const T& item){
+        queue_.push(item);
+    }
+
+    void notifyAll(){
+        cond_.notify_all();
     }
 
 private:

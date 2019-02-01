@@ -1,9 +1,10 @@
 //
 // Created by fede on 19/01/19.
+// From libboost
 //
 
-#ifndef LEVENSHTEIN_MYBARRIER_H
-#define LEVENSHTEIN_MYBARRIER_H
+#ifndef LEVENSHTEIN_BARRIER_H
+#define LEVENSHTEIN_BARRIER_H
 
 #include <thread>
 #include <mutex>
@@ -41,4 +42,4 @@ private:
     unsigned int m_count_reset_value;
 };
 
-#endif //LEVENSHTEIN_MYBARRIER_H
+#endif //LEVENSHTEIN_BARRIER_H
