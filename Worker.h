@@ -12,8 +12,6 @@
 #include <omp.h>
 #include <unistd.h>
 #include <thread>
-#include <mutex>
-#include <condition_variable>
 #include <atomic>
 #include "BoostBarrier.h"
 #include "ind.h"
@@ -52,7 +50,7 @@ public:
     }
 
     static const int TILE_WIDTH = 512;
-    static const int MAX_THREAD_COUNT = 8;
+    static const int MAX_THREAD_COUNT = 12;
 
 private:
 

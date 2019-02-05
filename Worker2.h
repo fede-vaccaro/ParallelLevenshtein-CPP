@@ -12,8 +12,6 @@
 #include <omp.h>
 #include <unistd.h>
 #include <thread>
-#include <mutex>
-#include <condition_variable>
 #include <atomic>
 #include "BoostBarrier.h"
 #include "ind.h"

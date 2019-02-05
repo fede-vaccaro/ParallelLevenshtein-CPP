@@ -24,6 +24,10 @@ mutex
 condition_variable
 -
 
+/home/fede/CLionProjects/Levenshtein/Worker.cpp
+Worker.h
+/home/fede/CLionProjects/Levenshtein/Worker.h
+
 /home/fede/CLionProjects/Levenshtein/Worker.h
 iostream
 -

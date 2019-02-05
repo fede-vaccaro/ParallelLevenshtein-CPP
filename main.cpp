@@ -16,6 +16,7 @@
 #include "uint.h"
 #include "ConcurrentQueue.h"
 
+
 int minimum(int a, int b, int c) {
     int min = a;
 
@@ -65,7 +66,7 @@ int editDistanceST(const char *x, const char *y) {
     }
     t2 = omp_get_wtime();
 
-    printf("Pure ST computing time: %f\n", t2-t1);
+    //printf("Pure ST computing time: %f\n", t2-t1);
     distance = D[M][N];
 /*
     for(i = 0; i < M+1; i++){
@@ -92,9 +93,8 @@ void printMatrix(uint16 const *D, const uint16 M, const uint16 N) {
     }
 }
 
-const int MAX_NUM_THREADS = 32;
-
-const uint TW = 512;
+const int MAX_NUM_THREADS = 12;
+const uint TW = 1024;
 
 void computeSubMatrix(uint I, uint J, const int M, const int N, const char *x, const char *y, uint16 *D) {
     uint M_ = M + 1;
@@ -236,7 +236,7 @@ int editDistanceCPPT(const char *x, const char *y) {
     }
     threadBarrier.count_down_and_wait(); // wait threads for the completion
     t2 = omp_get_wtime();
-    printf("Pure computing time: %f\n", t2-t1);
+    //printf("Pure computing time: %f\n", t2-t1);
 
     int distance = D[N * M_ + M];
 
@@ -284,15 +284,15 @@ int editDistanceCPPT2(const char *x, const char *y) {
     }
 
     for (int d = DStart; d < DFinish; d++) {
-        const int iMax = std::min(M_Tiles + d, N_Tiles);
-        const int iMin = std::max(d, 0);
+        const int iMax = std::min(M_Tiles + d, N_Tiles); //handling the case when we are filling the left up corner of the matrix
+        const int iMin = std::max(d, 0); //handling the case when we are filling the right low corner of the matrix
 
         for (i = iMin; i < iMax; i++) {
             j = M_Tiles - i + d - 1;
             indexQueue.push(ind(i,j));
         }
         for(i = 0; i < Worker2::MAX_THREAD_COUNT; i++){
-            indexQueue.push(ind(-2,.2));
+            indexQueue.push(ind(-2,-2));
         }
         threadBarrier.count_down_and_wait();
     }
@@ -429,8 +429,8 @@ int main() {
 
     std::cout << "uint16 is: " << sizeof(uint16)*8 << " bit" << std::endl;
 
-    const int N = 40000+1;
-    std::cout << "N is: " << N << std::endl;
+    const int N = 1000+1;
+    std::cout << "N is: " << N-1 << std::endl;
     char *A = new char[N];
     char *B = new char[N];
 
@@ -459,12 +459,6 @@ int main() {
 
     A[N - 1] = B[N - 1] = '\0';
 
-    //std::cout << "Edit distance of the generated string: " << priorDistance << std::endl;
-
-
-    //const char *A = "aaabbaaa";
-    //const char *B = "aaabcaaa";
-
 
     if (strlen(A) < strlen(B)) {
         std::swap(A, B);
@@ -474,21 +468,45 @@ int main() {
     printf("computing edit distance\n");
     int d;
     double t1, t2;
+    double ST_Time = 0.0, CPPT_Time = 0.0, CPPT2_Time = 0.0, OMP_Time = 0.0;
+    int iterations = 5;
+    //ST_Time = 0.0014*iterations;
+for(int i = 0; i < iterations; i++) {
 
     t1 = omp_get_wtime();
     d = editDistanceST(A, B);
     t2 = omp_get_wtime();
-    std::cout << "The edit distance is: " << d << "; Computed in (ST): " << t2 - t1 << std::endl;
+    ST_Time += t2 - t1;
+    //std::cout << "The edit distance is: " << d << "; Computed in (ST): " << t2 - t1 << std::endl;
 
+    usleep(100);
     t1 = omp_get_wtime();
     d = editDistanceCPPT(A, B);
     t2 = omp_get_wtime();
-    std::cout << "The edit distance is: " << d << "; Computed in (CPPT): " << t2 - t1 << std::endl;
-/*
+    CPPT_Time += t2 - t1;
+    usleep(100);
+    //std::cout << "The edit distance is: " << d << "; Computed in (CPPT): " << t2 - t1 << std::endl;
+
+
     t1 = omp_get_wtime();
-    d = editDistanceOMP(A, B);
+    d = editDistanceCPPT2(A, B);
     t2 = omp_get_wtime();
-    std::cout << "The edit distance is: " << d << "; Computed in (OMP): " << t2 - t1 << std::endl;
-*/
+    CPPT2_Time += t2 - t1;
+    usleep(100);
+
+    //std::cout << "The edit distance is: " << d << "; Computed in (CPPT2): " << t2 - t1 << std::endl;
+    //t1 = omp_get_wtime();
+    //d = editDistanceOMP(A, B);
+    //t2 = omp_get_wtime();
+    //OMP_Time += t2 - t1;
+    //std::cout << "The edit distance is: " << d << "; Computed in (OMP): " << t2 - t1 << std::endl;
+    printf("Iteration n: %i\n", i+1);
+ }
+    std::cout << "ST time " << ST_Time/iterations << std::endl;
+    std::cout << "CPPT time " << CPPT_Time/iterations << " SpeedUp: " << ST_Time/CPPT_Time << std::endl;
+    std::cout << "CPPT2 time " << CPPT2_Time/iterations << " SpeedUp: " << ST_Time/CPPT2_Time << std::endl;
+    std::cout << "OMP time " << OMP_Time/iterations << " SpeedUp: " << ST_Time/OMP_Time <<std::endl;
+
+
     return 0;
 }
