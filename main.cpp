@@ -276,11 +276,11 @@ int editDistanceCPPT2(const char *x, const char *y) {
     float t1, t2;
 
     barrier threadBarrier(Worker2::MAX_THREAD_COUNT + 1);
-    std::vector<ConcurrentQueue<ind>> indexQueue(Worker2::MAX_THREAD_COUNT);
+    ConcurrentQueue<ind> indexQueue;
     std::vector<std::thread> threadVec(Worker2::MAX_THREAD_COUNT);
 
     for(i = 0; i < Worker2::MAX_THREAD_COUNT; i++){
-        threadVec[i] = std::thread(Worker2(x,y,D, &threadBarrier, indexQueue[i]));
+        threadVec[i] = std::thread(Worker2(x,y,D, &threadBarrier, indexQueue));
         threadVec[i].detach();
     }
 
@@ -291,18 +291,17 @@ int editDistanceCPPT2(const char *x, const char *y) {
 
         for (i = iMin; i < iMax; i++) {
             j = M_Tiles - i + d - 1;
-            indexQueue[i%Worker2::MAX_THREAD_COUNT].push(ind(i,j));
+            indexQueue.push(ind(i,j));
         }
-        if(d != DFinish - 1) {
-            for (i = 0; i < Worker2::MAX_THREAD_COUNT; i++) {
-                indexQueue[i].push(ind(-2, -2));
-            }
-        }
+         for (i = 0; i < Worker2::MAX_THREAD_COUNT; i++) {
+                indexQueue.push(ind(-2, -2));
+         }
+         threadBarrier.count_down_and_wait();
     }
 
     //poison pills
     for(i = 0; i < Worker2::MAX_THREAD_COUNT; i++){
-        indexQueue[i].push(ind(-1,-1));
+        indexQueue.push(ind(-1,-1));
     }
 
 
@@ -391,7 +390,7 @@ int main() {
     int d;
     double t1, t2;
     double ST_Time = 0.0, CPPT_Time = 0.0, CPPT2_Time = 0.0, CPPT3_Time = 0.0, OMP_Time = 0.0;
-    int iterations = 10;
+    int iterations = 25;
     //ST_Time = 0.0014*iterations;
 for(int i = 0; i < iterations; i++) {
     printf("Iteration n: %i\n", i+1);
@@ -413,7 +412,7 @@ for(int i = 0; i < iterations; i++) {
     t2 = omp_get_wtime();
     CPPT2_Time += t2 - t1;
 
-    std::cout << "The edit distance is: " << d << "; Computed in (Cyclic): " << t2 - t1 << std::endl;
+    std::cout << "The edit distance is: " << d << "; Computed in (Dynamic Barrier): " << t2 - t1 << std::endl;
 
     t1 = omp_get_wtime();
     d = editDistanceCPPT3(A, B);

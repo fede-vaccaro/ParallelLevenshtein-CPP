@@ -52,18 +52,12 @@ uint.h
 ConcurrentQueue.h
 /home/fede/CLionProjects/Levenshtein/ConcurrentQueue.h
 
-/home/fede/CLionProjects/Levenshtein/Worker2.cpp
-Worker2.h
-/home/fede/CLionProjects/Levenshtein/Worker2.h
-
 /home/fede/CLionProjects/Levenshtein/Worker2.h
 iostream
 -
 string
 -
 vector
--
-queue
 -
 string.h
 -
