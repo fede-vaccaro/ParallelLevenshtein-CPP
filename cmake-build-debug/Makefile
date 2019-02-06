@@ -231,6 +231,33 @@ Worker2.cpp.s:
 	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker2.cpp.s
 .PHONY : Worker2.cpp.s
 
+Worker3.o: Worker3.cpp.o
+
+.PHONY : Worker3.o
+
+# target to build an object file
+Worker3.cpp.o:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker3.cpp.o
+.PHONY : Worker3.cpp.o
+
+Worker3.i: Worker3.cpp.i
+
+.PHONY : Worker3.i
+
+# target to preprocess a source file
+Worker3.cpp.i:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker3.cpp.i
+.PHONY : Worker3.cpp.i
+
+Worker3.s: Worker3.cpp.s
+
+.PHONY : Worker3.s
+
+# target to generate assembly for a file
+Worker3.cpp.s:
+	$(MAKE) -f CMakeFiles/Levenshtein.dir/build.make CMakeFiles/Levenshtein.dir/Worker3.cpp.s
+.PHONY : Worker3.cpp.s
+
 ind.o: ind.cpp.o
 
 .PHONY : ind.o
@@ -306,6 +333,9 @@ help:
 	@echo "... Worker2.o"
 	@echo "... Worker2.i"
 	@echo "... Worker2.s"
+	@echo "... Worker3.o"
+	@echo "... Worker3.i"
+	@echo "... Worker3.s"
 	@echo "... ind.o"
 	@echo "... ind.i"
 	@echo "... ind.s"

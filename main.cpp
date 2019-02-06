@@ -13,6 +13,7 @@
 #include "ind.h"
 #include "Worker.h"
 #include "Worker2.h"
+#include "Worker3.h"
 #include "uint.h"
 #include "ConcurrentQueue.h"
 
@@ -94,7 +95,7 @@ void printMatrix(uint16 const *D, const uint16 M, const uint16 N) {
 }
 
 const int MAX_NUM_THREADS = 12;
-const uint TW = 1024;
+const uint TW = 512;
 
 void computeSubMatrix(uint I, uint J, const int M, const int N, const char *x, const char *y, uint16 *D) {
     uint M_ = M + 1;
@@ -275,13 +276,14 @@ int editDistanceCPPT2(const char *x, const char *y) {
     float t1, t2;
 
     barrier threadBarrier(Worker2::MAX_THREAD_COUNT + 1);
-    ConcurrentQueue<ind> indexQueue;
+    std::vector<ConcurrentQueue<ind>> indexQueue(Worker2::MAX_THREAD_COUNT);
     std::vector<std::thread> threadVec(Worker2::MAX_THREAD_COUNT);
 
     for(i = 0; i < Worker2::MAX_THREAD_COUNT; i++){
-        threadVec[i] = std::thread(Worker2(x,y,D, &threadBarrier, indexQueue));
+        threadVec[i] = std::thread(Worker2(x,y,D, &threadBarrier, indexQueue[i]));
         threadVec[i].detach();
     }
+
 
     for (int d = DStart; d < DFinish; d++) {
         const int iMax = std::min(M_Tiles + d, N_Tiles); //handling the case when we are filling the left up corner of the matrix
@@ -289,18 +291,20 @@ int editDistanceCPPT2(const char *x, const char *y) {
 
         for (i = iMin; i < iMax; i++) {
             j = M_Tiles - i + d - 1;
-            indexQueue.push(ind(i,j));
+            indexQueue[i%Worker2::MAX_THREAD_COUNT].push(ind(i,j));
         }
-        for(i = 0; i < Worker2::MAX_THREAD_COUNT; i++){
-            indexQueue.push(ind(-2,-2));
+        if(d != DFinish - 1) {
+            for (i = 0; i < Worker2::MAX_THREAD_COUNT; i++) {
+                indexQueue[i].push(ind(-2, -2));
+            }
         }
-        threadBarrier.count_down_and_wait();
     }
 
     //poison pills
     for(i = 0; i < Worker2::MAX_THREAD_COUNT; i++){
-        indexQueue.push(ind(-1,-1));
+        indexQueue[i].push(ind(-1,-1));
     }
+
 
     threadBarrier.count_down_and_wait();
     int distance = D[N * M_ + M];
@@ -308,20 +312,17 @@ int editDistanceCPPT2(const char *x, const char *y) {
     delete[] D;
     return distance;
 }
-
-/*
-int editDistanceMT2(const char *x, const char *y) {
+int editDistanceCPPT3(const char *x, const char *y) {
     const int M = strlen(x);
     const int N = strlen(y);
 
-    const int M_ = M + 1;
-    const int N_ = N + 1;
+    const uint M_ = M + 1;
+    const uint N_ = N + 1;
 
-    //int ** D = new int *[M+1];
-    std::vector<int> D;
-    D.resize(M_ * N_);
+    const uint dim = (uint)M_*(uint)N_;
+    uint16 * D = new uint16[dim];
 
-    int i, j;
+    uint i, j;
 
     for (i = 0; i < M_; i++)
         D[i] = i;
@@ -331,105 +332,26 @@ int editDistanceMT2(const char *x, const char *y) {
 
     ////////////////
 
-    int M_Tiles = ceil((float) M / Worker2::TILE_WIDTH);
-    int N_Tiles = ceil((float) N / Worker2::TILE_WIDTH);
+    barrier threadBarrier(Worker3::MAX_THREAD_COUNT + 1);
+    std::vector<std::thread> threadVec(Worker3::MAX_THREAD_COUNT);
 
-    const int TOTAL_TILES = M_Tiles * N_Tiles;
-
-    barrier b(Worker2::MAX_THREAD_COUNT + 1);
-    std::vector<std::thread> threadVec;
-    const int tilesPerThreadA = ceil((float) M_Tiles / Worker2::MAX_THREAD_COUNT);
-    const int tilesPerThreadB = ceil((float) N_Tiles / Worker2::MAX_THREAD_COUNT);
-    for (i = 0; i < Worker2::MAX_THREAD_COUNT; i++) {
-
-        ind startStopA = ind(i * tilesPerThreadA, (i + 1) * tilesPerThreadA);
-        ind startStopB = ind(i * tilesPerThreadB, (i + 1) * tilesPerThreadB);
-
-        if (startStopA.i > M_Tiles || startStopB.i > N_Tiles)
-            break;
-
-        threadVec.push_back(std::thread(
-                Worker2(x, y, &D[0], &b,
-                        startStopA, startStopB)
-        ));
+    for(i = 0; i < Worker3::MAX_THREAD_COUNT; i++){
+        threadVec[i] = std::thread(Worker3(x,y,D, &threadBarrier));
         threadVec[i].detach();
     }
 
-
-    b.count_down_and_wait();
+    threadBarrier.count_down_and_wait();
+    Worker3::nThreads = 0;
     int distance = D[N * M_ + M];
-
-    //for (i = 0; i <= M; i++)
-    //    delete D[i];
-
+    delete[] D;
     return distance;
 }
-
-*/
-/*
-int editDistanceMT3(const char *x, const char *y) {
-    const int M = strlen(x);
-    const int N = strlen(y);
-
-    const int M_ = M + 1;
-    const int N_ = N + 1;
-
-    //int ** D = new int *[M+1];
-    std::vector<int> D;
-    D.resize(M_ * N_);
-
-    int i, j;
-
-    for (i = 0; i < M_; i++)
-        D[i] = i;
-
-    for (j = 1; j < N_; j++)
-        D[j * M_] = j;
-
-    ////////////////
-
-    int M_Tiles = ceil((float) M / Worker2::TILE_WIDTH);
-    int N_Tiles = ceil((float) N / Worker2::TILE_WIDTH);
-
-    const int TOTAL_TILES = M_Tiles * N_Tiles;
-
-    barrier b(Worker3::MAX_THREAD_COUNT + 1);
-    std::vector<std::thread> threadVec;
-    const int tilesPerThreadA = ceil((float) M_Tiles / Worker2::MAX_THREAD_COUNT);
-    const int tilesPerThreadB = ceil((float) N_Tiles / Worker2::MAX_THREAD_COUNT);
-    for (i = 0; i < Worker3::MAX_THREAD_COUNT; i++) {
-
-        ind startStopA = ind(i * tilesPerThreadA, (i + 1) * tilesPerThreadA);
-        ind startStopB = ind(i * tilesPerThreadB, (i + 1) * tilesPerThreadB);
-
-        if (startStopA.i > M_Tiles || startStopB.i > N_Tiles)
-            break;
-
-        threadVec.push_back(std::thread(
-                Worker2(x, y, &D[0], &b,
-                        startStopA, startStopB)
-        ));
-        threadVec[i].detach();
-    }
-
-
-    b.count_down_and_wait();
-    int distance = D[N * M_ + M];
-
-    //printMatrix(&D[0], M_, N_);
-
-    //for (i = 0; i <= M; i++)
-    //    delete D[i];
-
-    return distance;
-}
-*/
 
 int main() {
 
     std::cout << "uint16 is: " << sizeof(uint16)*8 << " bit" << std::endl;
 
-    const int N = 1000+1;
+    const int N = 50000+1;
     std::cout << "N is: " << N-1 << std::endl;
     char *A = new char[N];
     char *B = new char[N];
@@ -468,43 +390,47 @@ int main() {
     printf("computing edit distance\n");
     int d;
     double t1, t2;
-    double ST_Time = 0.0, CPPT_Time = 0.0, CPPT2_Time = 0.0, OMP_Time = 0.0;
-    int iterations = 5;
+    double ST_Time = 0.0, CPPT_Time = 0.0, CPPT2_Time = 0.0, CPPT3_Time = 0.0, OMP_Time = 0.0;
+    int iterations = 10;
     //ST_Time = 0.0014*iterations;
 for(int i = 0; i < iterations; i++) {
+    printf("Iteration n: %i\n", i+1);
 
     t1 = omp_get_wtime();
     d = editDistanceST(A, B);
     t2 = omp_get_wtime();
     ST_Time += t2 - t1;
-    //std::cout << "The edit distance is: " << d << "; Computed in (ST): " << t2 - t1 << std::endl;
+    std::cout << "The edit distance is: " << d << "; Computed in (ST): " << t2 - t1 << std::endl;
 
-    usleep(100);
     t1 = omp_get_wtime();
     d = editDistanceCPPT(A, B);
     t2 = omp_get_wtime();
     CPPT_Time += t2 - t1;
-    usleep(100);
-    //std::cout << "The edit distance is: " << d << "; Computed in (CPPT): " << t2 - t1 << std::endl;
-
+    std::cout << "The edit distance is: " << d << "; Computed in (Dynamic Scheduling): " << t2 - t1 << std::endl;
 
     t1 = omp_get_wtime();
     d = editDistanceCPPT2(A, B);
     t2 = omp_get_wtime();
     CPPT2_Time += t2 - t1;
-    usleep(100);
 
-    //std::cout << "The edit distance is: " << d << "; Computed in (CPPT2): " << t2 - t1 << std::endl;
-    //t1 = omp_get_wtime();
-    //d = editDistanceOMP(A, B);
-    //t2 = omp_get_wtime();
-    //OMP_Time += t2 - t1;
-    //std::cout << "The edit distance is: " << d << "; Computed in (OMP): " << t2 - t1 << std::endl;
-    printf("Iteration n: %i\n", i+1);
+    std::cout << "The edit distance is: " << d << "; Computed in (Cyclic): " << t2 - t1 << std::endl;
+
+    t1 = omp_get_wtime();
+    d = editDistanceCPPT3(A, B);
+    t2 = omp_get_wtime();
+    CPPT3_Time += t2 - t1;
+
+    std::cout << "The edit distance is: " << d << "; Computed in (BlockCyclic): " << t2 - t1 << std::endl;
+    t1 = omp_get_wtime();
+    d = editDistanceOMP(A, B);
+    t2 = omp_get_wtime();
+    OMP_Time += t2 - t1;
+    std::cout << "The edit distance is: " << d << "; Computed in (OMP): " << t2 - t1 << std::endl;
  }
     std::cout << "ST time " << ST_Time/iterations << std::endl;
     std::cout << "CPPT time " << CPPT_Time/iterations << " SpeedUp: " << ST_Time/CPPT_Time << std::endl;
     std::cout << "CPPT2 time " << CPPT2_Time/iterations << " SpeedUp: " << ST_Time/CPPT2_Time << std::endl;
+    std::cout << "CPPT3 time " << CPPT3_Time/iterations << " SpeedUp: " << ST_Time/CPPT3_Time << std::endl;
     std::cout << "OMP time " << OMP_Time/iterations << " SpeedUp: " << ST_Time/OMP_Time <<std::endl;
 
 

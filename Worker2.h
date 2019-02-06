@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <queue>
 #include <string.h>
 #include <random>
 #include <omp.h>
@@ -26,13 +27,14 @@ public:
         ind ind1;
         while(1) {
 
-                indexQueue.pop(ind1);
+                ind1 = indexQueue.pop();
+
                 if(ind1.i == -1){
                     //printf("Thread %i is quitting...\n", tid);
                     break;
                 }
                 if(ind1.i == -2){
-                    thread_barrier->count_down_and_wait();
+                    privateBarrier.count_down_and_wait();
                     continue;
                 }
                 I = ind1.i * TILE_WIDTH + 1;
@@ -55,7 +57,7 @@ public:
 
     static const int TILE_WIDTH = 512;
     static const int MAX_THREAD_COUNT = 12;
-
+    static barrier privateBarrier;
 private:
 
     void computeSubMatrix() {
