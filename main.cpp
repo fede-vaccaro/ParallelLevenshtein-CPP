@@ -296,7 +296,7 @@ int editDistanceCPPT2(const char *x, const char *y) {
          for (i = 0; i < Worker2::MAX_THREAD_COUNT; i++) {
                 indexQueue.push(ind(-2, -2));
          }
-         threadBarrier.count_down_and_wait();
+         //threadBarrier.count_down_and_wait();
     }
 
     //poison pills
@@ -390,7 +390,7 @@ int main() {
     int d;
     double t1, t2;
     double ST_Time = 0.0, CPPT_Time = 0.0, CPPT2_Time = 0.0, CPPT3_Time = 0.0, OMP_Time = 0.0;
-    int iterations = 25;
+    int iterations = 5;
     //ST_Time = 0.0014*iterations;
 for(int i = 0; i < iterations; i++) {
     printf("Iteration n: %i\n", i+1);
@@ -405,21 +405,21 @@ for(int i = 0; i < iterations; i++) {
     d = editDistanceCPPT(A, B);
     t2 = omp_get_wtime();
     CPPT_Time += t2 - t1;
-    std::cout << "The edit distance is: " << d << "; Computed in (Dynamic Scheduling): " << t2 - t1 << std::endl;
+    std::cout << "The edit distance is: " << d << "; Computed in (Lock-based): " << t2 - t1 << std::endl;
 
     t1 = omp_get_wtime();
     d = editDistanceCPPT2(A, B);
     t2 = omp_get_wtime();
     CPPT2_Time += t2 - t1;
 
-    std::cout << "The edit distance is: " << d << "; Computed in (Dynamic Barrier): " << t2 - t1 << std::endl;
+    std::cout << "The edit distance is: " << d << "; Computed in (Barrier-based dynamic scheduling): " << t2 - t1 << std::endl;
 
     t1 = omp_get_wtime();
     d = editDistanceCPPT3(A, B);
     t2 = omp_get_wtime();
     CPPT3_Time += t2 - t1;
 
-    std::cout << "The edit distance is: " << d << "; Computed in (BlockCyclic): " << t2 - t1 << std::endl;
+    std::cout << "The edit distance is: " << d << "; Computed in (Barrier-based static scheduling): " << t2 - t1 << std::endl;
     t1 = omp_get_wtime();
     d = editDistanceOMP(A, B);
     t2 = omp_get_wtime();
@@ -427,9 +427,9 @@ for(int i = 0; i < iterations; i++) {
     std::cout << "The edit distance is: " << d << "; Computed in (OMP): " << t2 - t1 << std::endl;
  }
     std::cout << "ST time " << ST_Time/iterations << std::endl;
-    std::cout << "CPPT time " << CPPT_Time/iterations << " SpeedUp: " << ST_Time/CPPT_Time << std::endl;
-    std::cout << "CPPT2 time " << CPPT2_Time/iterations << " SpeedUp: " << ST_Time/CPPT2_Time << std::endl;
-    std::cout << "CPPT3 time " << CPPT3_Time/iterations << " SpeedUp: " << ST_Time/CPPT3_Time << std::endl;
+    std::cout << "Lock Based time " << CPPT_Time/iterations << " SpeedUp: " << ST_Time/CPPT_Time << std::endl;
+    std::cout << "Barrier-based dynamic scheduling " << CPPT2_Time/iterations << " SpeedUp: " << ST_Time/CPPT2_Time << std::endl;
+    std::cout << "Barrier-based static scheduling " << CPPT3_Time/iterations << " SpeedUp: " << ST_Time/CPPT3_Time << std::endl;
     std::cout << "OMP time " << OMP_Time/iterations << " SpeedUp: " << ST_Time/OMP_Time <<std::endl;
 
 

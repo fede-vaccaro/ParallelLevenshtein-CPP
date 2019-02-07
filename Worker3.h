@@ -33,6 +33,19 @@ public:
             const uint16 iMin = std::max(d, 0); //handling the case when we are filling the right low corner of the matrix
 
             uint16 diagLength = iMax - iMin;
+            int k = 0;
+
+            while(k*MAX_THREAD_COUNT + tid < diagLength){
+                uint16 i = k*MAX_THREAD_COUNT + tid + iMin;
+                uint16 j = M_Tiles - i + d - 1;
+                I = i * TILE_WIDTH + 1;
+                J = j * TILE_WIDTH + 1;
+
+                computeSubMatrix();
+                ++k;
+            }
+            /*
+            lower=upper=-1;
             if (diagLength > MAX_THREAD_COUNT) {
                 const uint16 tilePerThread = diagLength / MAX_THREAD_COUNT;
                 lower = tid * tilePerThread + iMin;
@@ -41,8 +54,6 @@ public:
             } else if (tid < diagLength) {
                 lower = tid + iMin;
                 upper = lower + 1;
-            } else {
-                lower = upper = -1;
             }
 
             uint16 remainder = diagLength % MAX_THREAD_COUNT;
@@ -64,7 +75,7 @@ public:
 
                 computeSubMatrix();
             }
-
+            */
             privateBarrier.count_down_and_wait();
         }
         thread_barrier->count_down_and_wait();
