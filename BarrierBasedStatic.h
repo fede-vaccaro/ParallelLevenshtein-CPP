@@ -19,7 +19,7 @@
 #include "uint.h"
 #include "ConcurrentQueue.h"
 
-class Worker3 {
+class BarrierBasedStatic {
 
 public:
     void operator()() {
@@ -82,12 +82,12 @@ public:
     }
 
 
-    Worker3(const char *x, const char *y, uint16 *D, barrier *b) :
+    BarrierBasedStatic(const char *x, const char *y, uint16 *D, barrier *b) :
             D(D), x(x), y(y), thread_barrier(b) {
         M = strlen(x);
         N = strlen(y);
-        M_Tiles = ceil((float) M / Worker3::TILE_WIDTH);
-        N_Tiles = ceil((float) N / Worker3::TILE_WIDTH);
+        M_Tiles = ceil((float) M / BarrierBasedStatic::TILE_WIDTH);
+        N_Tiles = ceil((float) N / BarrierBasedStatic::TILE_WIDTH);
         tid = nThreads++;
         lower = upper = 0;
     }

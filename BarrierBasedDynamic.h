@@ -18,7 +18,7 @@
 #include "uint.h"
 #include "ConcurrentQueue.h"
 
-class Worker2 {
+class BarrierBasedDynamic {
 
 public:
     void operator()() {
@@ -44,12 +44,12 @@ public:
         thread_barrier->count_down_and_wait();
     }
 
-    Worker2(const char *x, const char *y, uint16 *D, barrier *b, ConcurrentQueue<ind>& indexQueue) :
+    BarrierBasedDynamic(const char *x, const char *y, uint16 *D, barrier *b, ConcurrentQueue<ind>& indexQueue) :
             D(D), x(x), y(y), thread_barrier(b), indexQueue(indexQueue) {
         M = strlen(x);
         N = strlen(y);
-        M_Tiles = ceil((float) M / Worker2::TILE_WIDTH);
-        N_Tiles = ceil((float) N / Worker2::TILE_WIDTH);
+        M_Tiles = ceil((float) M / BarrierBasedDynamic::TILE_WIDTH);
+        N_Tiles = ceil((float) N / BarrierBasedDynamic::TILE_WIDTH);
         tid = nThreads++;
     }
 

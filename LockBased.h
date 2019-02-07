@@ -18,7 +18,7 @@
 #include "uint.h"
 #include "ConcurrentQueue.h"
 
-class Worker {
+class LockBased {
 
 public:
     void operator()() {
@@ -40,12 +40,12 @@ public:
         thread_barrier->count_down_and_wait(); // to synchronize each thread after the completion
     }
 
-    Worker(const char *x, const char *y, uint16 *D, barrier *b, ConcurrentQueue<ind>& indexQueue, std::atomic_bool* tileComputed) :
+    LockBased(const char *x, const char *y, uint16 *D, barrier *b, ConcurrentQueue<ind>& indexQueue, std::atomic_bool* tileComputed) :
             D(D), x(x), y(y), tileComputed(tileComputed), thread_barrier(b), indexQueue(indexQueue) {
         M = strlen(x);
         N = strlen(y);
-        M_Tiles = ceil((float) M / Worker::TILE_WIDTH);
-        N_Tiles = ceil((float) N / Worker::TILE_WIDTH);
+        M_Tiles = ceil((float) M / LockBased::TILE_WIDTH);
+        N_Tiles = ceil((float) N / LockBased::TILE_WIDTH);
         tid = nThreads++;
     }
 

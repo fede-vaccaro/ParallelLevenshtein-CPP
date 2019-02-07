@@ -11,9 +11,9 @@
 #include <atomic>
 #include "BoostBarrier.h"
 #include "ind.h"
-#include "Worker.h"
-#include "Worker2.h"
-#include "Worker3.h"
+#include "LockBased.h"
+#include "BarrierBasedDynamic.h"
+#include "BarrierBasedStatic.h"
 #include "uint.h"
 #include "ConcurrentQueue.h"
 
@@ -143,7 +143,7 @@ int editDistanceOMP(const char *x, const char *y) {
 
     const int DStart = -M_Tiles + 1;
     const int DFinish = N_Tiles;
-    const int TILE_WIDTH = Worker::TILE_WIDTH;
+    const int TILE_WIDTH = LockBased::TILE_WIDTH;
 
 
     const int TOTAL_TILES = M_Tiles * N_Tiles;
@@ -197,8 +197,8 @@ int editDistanceCPPT(const char *x, const char *y) {
 
     ////////////////
 
-    int M_Tiles = ceil((float) M / Worker::TILE_WIDTH);
-    int N_Tiles = ceil((float) N / Worker::TILE_WIDTH);
+    int M_Tiles = ceil((float) M / LockBased::TILE_WIDTH);
+    int N_Tiles = ceil((float) N / LockBased::TILE_WIDTH);
 
     const int DStart = -M_Tiles + 1;
     const int DFinish = N_Tiles;
@@ -212,9 +212,9 @@ int editDistanceCPPT(const char *x, const char *y) {
         tileComputed[i] = false;
     }
 
-    barrier threadBarrier(Worker::MAX_THREAD_COUNT + 1);
+    barrier threadBarrier(LockBased::MAX_THREAD_COUNT + 1);
     ConcurrentQueue<ind> indexQueue;
-    std::vector<std::thread> threadVec(Worker::MAX_THREAD_COUNT);
+    std::vector<std::thread> threadVec(LockBased::MAX_THREAD_COUNT);
 
     for (int d = DStart; d < DFinish; d++) {
         const int iMax = std::min(M_Tiles + d, N_Tiles);
@@ -226,13 +226,13 @@ int editDistanceCPPT(const char *x, const char *y) {
     }
 
     //poison pills
-    for(i = 0; i < Worker::MAX_THREAD_COUNT; i++){
+    for(i = 0; i < LockBased::MAX_THREAD_COUNT; i++){
         indexQueue.push_unsafe(ind(-1,-1));
     }
     t1 = omp_get_wtime();
     //launch threads asynchronously
-    for(i = 0; i < Worker::MAX_THREAD_COUNT; i++){
-        threadVec[i] = std::thread(Worker(x,y,D, &threadBarrier, indexQueue, tileComputed));
+    for(i = 0; i < LockBased::MAX_THREAD_COUNT; i++){
+        threadVec[i] = std::thread(LockBased(x,y,D, &threadBarrier, indexQueue, tileComputed));
         threadVec[i].detach();
     }
     threadBarrier.count_down_and_wait(); // wait threads for the completion
@@ -266,8 +266,8 @@ int editDistanceCPPT2(const char *x, const char *y) {
 
     ////////////////
 
-    int M_Tiles = ceil((float) M / Worker2::TILE_WIDTH);
-    int N_Tiles = ceil((float) N / Worker2::TILE_WIDTH);
+    int M_Tiles = ceil((float) M / BarrierBasedDynamic::TILE_WIDTH);
+    int N_Tiles = ceil((float) N / BarrierBasedDynamic::TILE_WIDTH);
 
     const int DStart = -M_Tiles + 1;
     const int DFinish = N_Tiles;
@@ -275,12 +275,12 @@ int editDistanceCPPT2(const char *x, const char *y) {
     const int TOTAL_TILES = M_Tiles * N_Tiles;
     float t1, t2;
 
-    barrier threadBarrier(Worker2::MAX_THREAD_COUNT + 1);
+    barrier threadBarrier(BarrierBasedDynamic::MAX_THREAD_COUNT + 1);
     ConcurrentQueue<ind> indexQueue;
-    std::vector<std::thread> threadVec(Worker2::MAX_THREAD_COUNT);
+    std::vector<std::thread> threadVec(BarrierBasedDynamic::MAX_THREAD_COUNT);
 
-    for(i = 0; i < Worker2::MAX_THREAD_COUNT; i++){
-        threadVec[i] = std::thread(Worker2(x,y,D, &threadBarrier, indexQueue));
+    for(i = 0; i < BarrierBasedDynamic::MAX_THREAD_COUNT; i++){
+        threadVec[i] = std::thread(BarrierBasedDynamic(x,y,D, &threadBarrier, indexQueue));
         threadVec[i].detach();
     }
 
@@ -293,14 +293,14 @@ int editDistanceCPPT2(const char *x, const char *y) {
             j = M_Tiles - i + d - 1;
             indexQueue.push(ind(i,j));
         }
-         for (i = 0; i < Worker2::MAX_THREAD_COUNT; i++) {
+         for (i = 0; i < BarrierBasedDynamic::MAX_THREAD_COUNT; i++) {
                 indexQueue.push(ind(-2, -2));
          }
          //threadBarrier.count_down_and_wait();
     }
 
     //poison pills
-    for(i = 0; i < Worker2::MAX_THREAD_COUNT; i++){
+    for(i = 0; i < BarrierBasedDynamic::MAX_THREAD_COUNT; i++){
         indexQueue.push(ind(-1,-1));
     }
 
@@ -331,16 +331,16 @@ int editDistanceCPPT3(const char *x, const char *y) {
 
     ////////////////
 
-    barrier threadBarrier(Worker3::MAX_THREAD_COUNT + 1);
-    std::vector<std::thread> threadVec(Worker3::MAX_THREAD_COUNT);
+    barrier threadBarrier(BarrierBasedStatic::MAX_THREAD_COUNT + 1);
+    std::vector<std::thread> threadVec(BarrierBasedStatic::MAX_THREAD_COUNT);
 
-    for(i = 0; i < Worker3::MAX_THREAD_COUNT; i++){
-        threadVec[i] = std::thread(Worker3(x,y,D, &threadBarrier));
+    for(i = 0; i < BarrierBasedStatic::MAX_THREAD_COUNT; i++){
+        threadVec[i] = std::thread(BarrierBasedStatic(x,y,D, &threadBarrier));
         threadVec[i].detach();
     }
 
     threadBarrier.count_down_and_wait();
-    Worker3::nThreads = 0;
+    BarrierBasedStatic::nThreads = 0;
     int distance = D[N * M_ + M];
     delete[] D;
     return distance;
